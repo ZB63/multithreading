@@ -9,12 +9,12 @@ public class RadarTest {
 
     @RepeatedTest(100)
     public void launchPatriotOnceWhenNoticesAScudMissle() {
-        int times = 10;
+        int howManyShots = 10;
         PatriotBattery batteryMock = mock(PatriotBattery.class);
-        LaunchingSystem launchingSystem = new LaunchingSystem(batteryMock, times);
+        LaunchingSystem launchingSystem = new LaunchingSystem(batteryMock, howManyShots);
         Scud enemyMissle = new Scud();
         launchingSystem.launch(enemyMissle);
-        verify(batteryMock, times(10)).launchPatriot(enemyMissle);
+        verify(batteryMock, times(howManyShots)).launchPatriot(enemyMissle);
     }
 
 }
