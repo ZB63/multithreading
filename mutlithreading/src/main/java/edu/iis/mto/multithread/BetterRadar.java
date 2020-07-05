@@ -2,11 +2,15 @@ package edu.iis.mto.multithread;
 
 public class BetterRadar {
     private PatriotBattery battery;
-    private LaunchingSystem launchingSystem;
+    private TaskGenerator taskGenerator;
+    private CommandLauncher commandLauncher;
+    private int shots;
 
-    public BetterRadar(PatriotBattery battery, LaunchingSystem launchingSystem) {
+    public BetterRadar(PatriotBattery battery, TaskGenerator taskGenerator, CommandLauncher commandLauncher, int shots) {
         this.battery = battery;
-        this.launchingSystem = launchingSystem;
+        this.taskGenerator = taskGenerator;
+        this.commandLauncher = commandLauncher;
+        this.shots = shots;
     }
 
     public void notice(Scud enemyMissle) {
@@ -14,15 +18,7 @@ public class BetterRadar {
     }
 
     private void launchPatriot(Scud enemyMissle) {
-        Runnable launchPatriotTask = new Runnable() {
-
-            @Override
-            public void run() {
-                launchingSystem.launch(enemyMissle);
-            }
-        };
-
-        Thread launchingThread = new Thread(launchPatriotTask);
-        launchingThread.start();
+        Runnable task = taskGenerator.generateTask(battery, enemyMissle, shots);
+        commandLauncher.launchCommand(task);
     }
 }
